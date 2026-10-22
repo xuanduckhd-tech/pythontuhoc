@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Python Tương Tác - Python Course Portal & Lab Tracker</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        python: {
+                            yellow: '#FFD43B',
+                            blue: '#306998',
+                            darkblue: '#1e415e'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', 'Courier New', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        pre, code { font-family: 'Fira Code', monospace; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .light .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col transition-colors duration-300 light:bg-slate-50 light:text-slate-900">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800 light:border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand & Title -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-sky-500/20">
+                    <i class="fa-brands fa-python text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight bg-gradient-to-r from-sky-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
+                        Học Python Tương Tác
+                    </h1>
+                    <p class="text-xs text-slate-400 light:text-slate-500">Cổng Học Tập & Theo Dõi Tiến Độ</p>
+                </div>
+            </div>
+
+            <!-- Header Action Items -->
+            <div class="flex items-center gap-3">
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex items-center gap-1 bg-slate-900/80 p-1 rounded-xl border border-slate-800 light:bg-slate-200/80 light:border-slate-300 text-xs font-medium">
+                    <button id="nav-midterm" onclick="switchMainTab('midterm')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition light:hover:text-slate-900">
+                        <i class="fa-solid fa-graduation-cap mr-1.5 text-amber-400"></i>Ôn Thi Midterm
+                    </button>
+                    <button id="nav-curriculum" onclick="switchMainTab('curriculum')" class="px-3 py-1.5 rounded-lg bg-sky-600 text-white transition">
+                        <i class="fa-solid fa-book-open mr-1.5"></i>Bài Học & Lab
+                    </button>
+                    <button id="nav-playground" onclick="switchMainTab('playground')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition light:hover:text-slate-900">
+                        <i class="fa-solid fa-code mr-1.5"></i>Playground
+                    </button>
+                    <button id="nav-resources" onclick="switchMainTab('resources')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition light:hover:text-slate-900">
+                        <i class="fa-solid fa-bookmark mr-1.5"></i>Tài Liệu
+                    </button>
+                </nav>
+
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle" onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 light:bg-slate-200 light:text-slate-700 transition" title="Chuyển chế độ Sáng/Tối">
+                    <i id="theme-icon" class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Bar -->
+        <div class="md:hidden flex flex-wrap border-t border-slate-800 light:border-slate-200 text-[10px] bg-slate-900/90 light:bg-slate-100">
+            <button id="nav-mob-midterm" onclick="switchMainTab('midterm')" class="flex-1 py-2 text-center text-slate-400">
+                <i class="fa-solid fa-graduation-cap block text-sm mb-0.5 text-amber-400"></i> Ôn Thi
+            </button>
+            <button id="nav-mob-curriculum" onclick="switchMainTab('curriculum')" class="flex-1 py-2 text-center text-sky-400 font-semibold border-b-2 border-sky-400">
+                <i class="fa-solid fa-book-open block text-sm mb-0.5"></i> Bài Học
+            </button>
+            <button id="nav-mob-playground" onclick="switchMainTab('playground')" class="flex-1 py-2 text-center text-slate-400">
+                <i class="fa-solid fa-code block text-sm mb-0.5"></i> Playground
+            </button>
+            <button id="nav-mob-resources" onclick="switchMainTab('resources')" class="flex-1 py-2 text-center text-slate-400">
+                <i class="fa-solid fa-bookmark block text-sm mb-0.5"></i> Tài Liệu
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+        <!-- TAB 0: MIDTERM PREP (Lý thuyết & Bài làm) -->
+        <div id="tab-midterm-view" class="hidden space-y-6">
+            
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-amber-500">
+                <h2 class="text-xl font-bold text-amber-400 mb-2"><i class="fa-solid fa-graduation-cap mr-2"></i>Trọng Tâm Lý Thuyết & Luyện Tập Midterm</h2>
+                <p class="text-sm text-slate-300 light:text-slate-600">Phần này tổng hợp các kiến thức cốt lõi và các bài tập trắc nghiệm hóc búa mô phỏng cấu trúc đề thi giấy (Lec 1 - 14).</p>
+            </div>
+
+            <!-- Theory Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- 1. Kiểu dữ liệu & Toán tử -->
+                <div class="glass-panel p-5 rounded-xl">
+                    <h3 class="font-bold text-blue-400 mb-3 border-b border-slate-700 pb-2"><i class="fa-solid fa-calculator mr-2"></i>1. Kiểu Dữ Liệu & Biểu Thức</h3>
+                    <ul class="text-sm space-y-2 text-slate-300 light:text-slate-700 list-disc pl-4">
+                        <li><strong>Toán tử chia:</strong> <code>/</code> luôn trả về float. <code>//</code> chia lấy phần nguyên. <code>%</code> chia lấy dư.</li>
+                        <li><strong>Short-circuit:</strong> <code>A and B</code>, nếu A sai thì không cần xét B.</li>
+                    </ul>
+                </div>
+
+                <!-- 2. Hàm & Scope -->
+                <div class="glass-panel p-5 rounded-xl">
+                    <h3 class="font-bold text-purple-400 mb-3 border-b border-slate-700 pb-2"><i class="fa-solid fa-box-open mr-2"></i>2. Hàm & Scope</h3>
+                    <ul class="text-sm space-y-2 text-slate-300 light:text-slate-700 list-disc pl-4">
+                        <li><strong>Local Scope (Cục bộ):</strong> Biến tạo trong hàm chỉ tồn tại trong hàm.</li>
+                        <li><strong>Global Scope (Toàn cục):</strong> Để đổi giá trị biến global trong hàm, dùng từ khóa <code>global</code>.</li>
+                    </ul>
+                </div>
+
+                <!-- 3. Bộ nhớ -->
+                <div class="glass-panel p-5 rounded-xl">
+                    <h3 class="font-bold text-sky-400 mb-3 border-b border-slate-700 pb-2"><i class="fa-solid fa-memory mr-2"></i>3. Khung Kích Hoạt & Bộ Nhớ</h3>
+                    <ul class="text-sm space-y-2 text-slate-300 light:text-slate-700 list-disc pl-4">
+                        <li><strong>Call Stack:</strong> Chứa <i>Activation Records</i>. Hàm kết thúc -> Frame bị hủy.</li>
+                        <li><strong>Heap Space:</strong> Nơi lưu trữ thực sự của các đối tượng (như List, String).</li>
+                        <li><strong>Toán tử:</strong> <code>==</code> so sánh giá trị, <code>is</code> so sánh địa chỉ vùng nhớ Heap.</li>
+                    </ul>
+                </div>
+
+                <!-- 4. Danh sách & Aliasing -->
+                <div class="glass-panel p-5 rounded-xl">
+                    <h3 class="font-bold text-rose-400 mb-3 border-b border-slate-700 pb-2"><i class="fa-solid fa-clone mr-2"></i>4. Mutability & Aliasing</h3>
+                    <ul class="text-sm space-y-2 text-slate-300 light:text-slate-700 list-disc pl-4">
+                        <li><strong>Immutable (Bất biến):</strong> Chuỗi, Int. Sửa giá trị = sinh ra object mới.</li>
+                        <li><strong>Mutable (Có thể đổi):</strong> List. Thay đổi trực tiếp (in-place).</li>
+                        <li><strong>Aliasing (Đồng danh):</strong> <code>b = a</code>. Cả hai trỏ về 1 List. Để tránh, dùng <code>b = a.copy()</code>.</li>
+                    </ul>
+                </div>
+
+                <!-- 5. Loop Invariants -->
+                <div class="glass-panel p-5 rounded-xl md:col-span-2">
+                    <h3 class="font-bold text-emerald-400 mb-3 border-b border-slate-700 pb-2"><i class="fa-solid fa-rotate mr-2"></i>5. Bất biến vòng lặp (Loop Invariants)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-slate-300 light:text-slate-700 mt-3">
+                        <div class="bg-slate-900/50 p-3 rounded-lg border border-slate-800 light:bg-slate-100 light:border-slate-300">
+                            <strong class="text-emerald-300">1. Khởi tạo (Initialization):</strong><br> Đúng TRƯỚC lần lặp đầu tiên.
+                        </div>
+                        <div class="bg-slate-900/50 p-3 rounded-lg border border-slate-800 light:bg-slate-100 light:border-slate-300">
+                            <strong class="text-emerald-300">2. Duy trì (Maintenance):</strong><br> Nếu đúng trước vòng lặp thứ i, nó vẫn đúng SAU vòng lặp i.
+                        </div>
+                        <div class="bg-slate-900/50 p-3 rounded-lg border border-slate-800 light:bg-slate-100 light:border-slate-300">
+                            <strong class="text-emerald-300">3. Kết thúc (Termination):</strong><br> Khi dừng, điều kiện này chứng minh thuật toán đã đúng.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Midterm Quizzes -->
+            <div class="glass-panel p-6 rounded-2xl mt-6">
+                <h2 class="text-xl font-bold text-indigo-400 mb-4"><i class="fa-solid fa-fire mr-2"></i>Bài Tập Vận Dụng (Các câu hỏi bẫy)</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Q1 -->
+                    <div class="bg-slate-900/80 rounded-xl p-5 border border-slate-700 light:bg-white light:border-slate-200">
+                        <span class="text-[10px] bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded font-bold">Mutability</span>
+                        <p class="font-semibold text-sm mt-2 mb-3">Câu 1: Output của đoạn code sau là gì?</p>
+                        <pre class="bg-slate-950 p-3 rounded-lg text-sky-300 font-mono text-xs mb-3">def add_item(lst):
+    lst.append(4)
+
+a = [1, 2, 3]
+add_item(a)
+print(a)</pre>
+                        <div class="space-y-2 text-sm">
+                            <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-slate-800 rounded"><input type="radio" name="q1" value="A" class="text-sky-500"> A. [1, 2, 3]</label>
+                            <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-slate-800 rounded"><input type="radio" name="q1" value="B" class="text-sky-500"> B. [1, 2, 3, 4]</label>
+                            <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-slate-800 rounded"><input type="radio" name="q1" value="C" class="text-sky-500"> C. Lỗi RuntimeError</label>
+                        </div>
+                        <div class="mt-3"><button onclick="checkAnswer('q1', 'B', 'List là Mutable. Khi truyền List vào hàm, nó truyền tham chiếu. Hàm thay đổi List thì biến gốc cũng bị thay đổi.')" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs rounded">Kiểm tra</button><span id="res-q1" class="text-xs font-bold hidden ml-3 mt-2"></span></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="bg-slate-900/80 rounded-xl p-5 border border-slate-700 light:bg-white light:border-slate-200">
+                        <span class="text-[10px] bg-pink-500/20 text-pink-300 px-2 py-0.5 rounded font-bold">Strings</span>
+                        <p class="font-semibold text-sm mt-2 mb-3">Câu 2: Đoạn code sau gặp vấn đề gì?</p>
+                        <pre class="bg-slate-950 p-3 rounded-lg text-sky-300 font-mono text-xs mb-3">s = "Hello"
+s[0] = "M"
+print(s)</pre>
+                        <div class="space-y-2 text-sm">
+                            <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-slate-800 rounded"><input type="radio" name="q2" value="A" class="text-sky-500"> A. In ra "Mello"</label>
+                            <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-slate-800 rounded"><input type="radio" name="q2" value="B" class="text-sky-500"> B. Lỗi TypeError do String là Immutable (Bất biến)</label>
+                            <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-slate-800 rounded"><input type="radio" name="q2" value="C" class="text-sky-500"> C. In ra "Hello"</label>
+                        </div>
+                        <div class="mt-3"><button onclick="checkAnswer('q2', 'B', 'Chuỗi trong Python không thể bị thay đổi giá trị từng ký tự.')" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs rounded">Kiểm tra</button><span id="res-q2" class="text-xs font-bold hidden ml-3 mt-2"></span></div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="bg-slate-900/80 rounded-xl p-5 border border-slate-700 light:bg-white light:border-slate-200">
+                        <span class="text-[10px] bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded font-bold">Scope</span>
+                        <p class="font-semibold text-sm mt-2 mb-3">Câu 3: Kết quả in ra của x là?</p>
+                        <pre class="bg-slate-950 p-3 rounded-lg text-sky-300 font-mono text-xs mb-3">x = 10
+def change_x():
+    x = 20
+
+change_x()
+print(x)</pre>
+                        <div class="space-y-2 text-sm">
+                            <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-slate-800 rounded"><input type="radio" name="q3" value="A" class="text-sky-500"> A. 20</label>
+                            <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-slate-800 rounded"><input type="radio" name="q3" value="B" class="text-sky-500"> B. 10</label>
+                            <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-slate-800 rounded"><input type="radio" name="q3" value="C" class="text-sky-500"> C. Lỗi NameError</label>
+                        </div>
+                        <div class="mt-3"><button onclick="checkAnswer('q3', 'B', 'Biến x = 20 bên trong hàm là biến CỤC BỘ. Nó không làm thay đổi biến x TOÀN CỤC bên ngoài.')" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs rounded">Kiểm tra</button><span id="res-q3" class="text-xs font-bold hidden ml-3 mt-2"></span></div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="bg-slate-900/80 rounded-xl p-5 border border-slate-700 light:bg-white light:border-slate-200">
+                        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-bold">Memory</span>
+                        <p class="font-semibold text-sm mt-2 mb-3">Câu 4: Chọn câu trả lời đúng cho đoạn code:</p>
+                        <pre class="bg-slate-950 p-3 rounded-lg text-sky-300 font-mono text-xs mb-3">a = [1, 2]
+b = [1, 2]
+print(a == b)
+print(a is b)</pre>
+                        <div class="space-y-2 text-sm">
+                            <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-slate-800 rounded"><input type="radio" name="q4" value="A" class="text-sky-500"> A. True, True</label>
+                            <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-slate-800 rounded"><input type="radio" name="q4" value="B" class="text-sky-500"> B. True, False</label>
+                            <label class="flex items-center gap-2 cursor-pointer p-2 hover:bg-slate-800 rounded"><input type="radio" name="q4" value="C" class="text-sky-500"> C. False, False</label>
+                        </div>
+                        <div class="mt-3"><button onclick="checkAnswer('q4', 'B', 'a và b có cùng giá trị (==), nhưng là 2 đối tượng nằm ở 2 vùng nhớ Heap khác nhau (is).')" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs rounded">Kiểm tra</button><span id="res-q4" class="text-xs font-bold hidden ml-3 mt-2"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 1: Course Curriculum View -->
+        <div id="tab-curriculum-view" class="space-y-6">
+            
+            <!-- Dashboard Stats Overview Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Card 1: Progress Percentage -->
+                <div class="glass-panel p-4 rounded-2xl flex items-center gap-4 border-l-4 border-l-sky-500">
+                    <div class="relative w-14 h-14 flex items-center justify-center">
+                        <svg class="w-14 h-14 transform -rotate-90">
+                            <circle cx="28" cy="28" r="22" stroke="currentColor" stroke-width="4" class="text-slate-800 light:text-slate-200" fill="transparent"/>
+                            <circle id="progress-circle" cx="28" cy="28" r="22" stroke="currentColor" stroke-width="4" class="text-sky-500" fill="transparent" stroke-dasharray="138" stroke-dashoffset="138" stroke-linecap="round"/>
+                        </svg>
+                        <span id="overall-percent" class="absolute text-xs font-bold">0%</span>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400 light:text-slate-500 uppercase tracking-wider font-semibold">Tổng Tiến Độ</p>
+                        <h3 id="overall-status-text" class="text-lg font-extrabold text-slate-100 light:text-slate-800">0 / 21 Mục</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Nội dung Tuần 1 - 7</p>
+                    </div>
+                </div>
+
+                <!-- Card 2: Lectures Tracker -->
+                <div class="glass-panel p-4 rounded-2xl flex items-center justify-between border-l-4 border-l-indigo-500">
+                    <div>
+                        <p class="text-xs text-slate-400 light:text-slate-500 uppercase tracking-wider font-semibold">Bài Giảng (Lectures)</p>
+                        <h3 id="lecture-count-text" class="text-xl font-extrabold text-indigo-400">0 / 14</h3>
+                        <p class="text-xs text-slate-400 mt-1">Lý thuyết & Bất biến vòng lặp</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                </div>
+
+                <!-- Card 3: Labs Tracker -->
+                <div class="glass-panel p-4 rounded-2xl flex items-center justify-between border-l-4 border-l-emerald-500">
+                    <div>
+                        <p class="text-xs text-slate-400 light:text-slate-500 uppercase tracking-wider font-semibold">Bài Thực Hành (Labs)</p>
+                        <h3 id="lab-count-text" class="text-xl font-extrabold text-emerald-400">0 / 7</h3>
+                        <p class="text-xs text-slate-400 mt-1">Lab 1 đến Lab 7</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-flask"></i>
+                    </div>
+                </div>
+
+                <!-- Card 4: Personal Study Notes -->
+                <div class="glass-panel p-4 rounded-2xl flex items-center justify-between border-l-4 border-l-amber-500">
+                    <div>
+                        <p class="text-xs text-slate-400 light:text-slate-500 uppercase tracking-wider font-semibold">Ghi Chú Đã Lưu</p>
+                        <h3 id="notes-count-text" class="text-xl font-extrabold text-amber-400">0 Ghi chú</h3>
+                        <p class="text-xs text-slate-400 mt-1">Lưu trữ trên thiết bị</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter & Search Toolbar -->
+            <div class="glass-panel p-4 rounded-2xl space-y-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3">
+                    
+                    <!-- Search Input -->
+                    <div class="lg:col-span-4 relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+                        <input type="text" id="search-input" oninput="applyFilters()" placeholder="Tìm kiếm bài giảng, lab, từ khóa..." 
+                               class="w-full pl-10 pr-4 py-2 bg-slate-900/80 border border-slate-700/80 rounded-xl text-sm focus:outline-none focus:border-sky-500 light:bg-white light:border-slate-300">
+                    </div>
+
+                    <!-- Week Filter -->
+                    <div class="lg:col-span-3">
+                        <select id="week-filter" onchange="applyFilters()" class="w-full py-2 px-3 bg-slate-900/80 border border-slate-700/80 rounded-xl text-sm focus:outline-none focus:border-sky-500 light:bg-white light:border-slate-300">
+                            <option value="all">Tất cả các tuần (Week 1 - 7)</option>
+                            <option value="1">Tuần 1 (Lecture 1-2, Lab 1)</option>
+                            <option value="2">Tuần 2 (Lecture 3-4, Lab 2)</option>
+                            <option value="3">Tuần 3 (Lecture 5-6, Lab 3)</option>
+                            <option value="4">Tuần 4 (Lecture 7-8, Lab 4)</option>
+                            <option value="5">Tuần 5 (Lecture 9-10, Lab 5)</option>
+                            <option value="6">Tuần 6 (Lecture 11-12, Lab 6)</option>
+                            <option value="7">Tuần 7 (Lecture 13-14, Lab 7)</option>
+                        </select>
+                    </div>
+
+                    <!-- Type Filter -->
+                    <div class="lg:col-span-2">
+                        <select id="type-filter" onchange="applyFilters()" class="w-full py-2 px-3 bg-slate-900/80 border border-slate-700/80 rounded-xl text-sm focus:outline-none focus:border-sky-500 light:bg-white light:border-slate-300">
+                            <option value="all">Tất cả phân loại</option>
+                            <option value="lecture">Chỉ Bài Giảng (Lecture)</option>
+                            <option value="lab">Chỉ Bài Thực Hành (Lab)</option>
+                        </select>
+                    </div>
+
+                    <!-- CLO Filter -->
+                    <div class="lg:col-span-3">
+                        <select id="clo-filter" onchange="applyFilters()" class="w-full py-2 px-3 bg-slate-900/80 border border-slate-700/80 rounded-xl text-sm focus:outline-none focus:border-sky-500 light:bg-white light:border-slate-300">
+                            <option value="all">Tất cả Chuẩn Đầu Ra (CLO)</option>
+                            <option value="CLO1">CLO(1) - Cú pháp & Khái niệm cơ bản</option>
+                            <option value="CLO3">CLO(3) - Hàm, Phạm vi & Bộ nhớ</option>
+                            <option value="CLO5">CLO(5) - Danh sách, Lặp & Loop Invariants</option>
+                            <option value="CLO6">CLO(6) - Xử lý Chuỗi & Xử lý văn bản</option>
+                            <option value="CLO8">CLO(8) - Kiểm thử, Asserts & Debug</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Quick Action Buttons -->
+                <div class="flex flex-wrap items-center justify-between pt-2 border-t border-slate-800/80 light:border-slate-200 text-xs gap-2">
+                    <span id="active-count-label" class="text-slate-400">Hiển thị 21 / 21 mục</span>
+                    <div class="flex items-center gap-2">
+                        <button onclick="markAllVisible(true)" class="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 rounded-lg transition border border-emerald-500/20">
+                            <i class="fa-solid fa-check-double mr-1"></i>Đánh dấu xong mục đang lọc
+                        </button>
+                        <button onclick="resetAllProgress()" class="px-2.5 py-1 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 rounded-lg transition border border-rose-500/20">
+                            <i class="fa-solid fa-rotate-left mr-1"></i>Đặt lại tiến độ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Curriculum Cards List Grouped by Weeks -->
+            <div id="course-cards-container" class="space-y-6">
+                <!-- Rendered dynamically by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Tab 2: Interactive Python Playground -->
+        <div id="tab-playground-view" class="hidden space-y-4">
+            <div class="glass-panel p-5 rounded-2xl space-y-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800 light:border-slate-200 pb-3">
+                    <div>
+                        <h2 class="text-lg font-bold flex items-center gap-2 text-sky-400">
+                            <i class="fa-solid fa-terminal"></i> Trình Chạy Python Mô Phỏng Tương Tác
+                        </h2>
+                        <p class="text-xs text-slate-400">Thử nghiệm các đoạn mã code Python thực tế trong đề cương bài học (Tuần 1 - Tuần 7).</p>
+                    </div>
+
+                    <!-- Preset Code Snippets Selector -->
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <label class="text-xs text-slate-400 whitespace-nowrap">Mẫu Code:</label>
+                        <select id="playground-presets" onchange="loadPlaygroundPreset()" class="bg-slate-900 border border-slate-700 text-xs rounded-xl px-3 py-1.5 focus:outline-none focus:border-sky-500 light:bg-white light:border-slate-300 w-full sm:w-64">
+                            <option value="preset-w1">Tuần 1: Cú pháp & Biểu thức cơ bản</option>
+                            <option value="preset-w2">Tuần 2: Định nghĩa Hàm & Logic</option>
+                            <option value="preset-w3">Tuần 3: Phạm vi Hàm & Modules</option>
+                            <option value="preset-w4">Tuần 4: Xử lý Chuỗi & Kiểm thử Asserts</option>
+                            <option value="preset-w5">Tuần 5: Câu lệnh Điều kiện & Bộ nhớ</option>
+                            <option value="preset-w6">Tuần 6: Danh sách & Phương thức</option>
+                            <option value="preset-w7">Tuần 7: Vòng lặp While & Bất biến vòng lặp</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Playground Code Editor & Terminal Output Split -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <!-- Code Editor Box -->
+                    <div class="flex flex-col space-y-2">
+                        <div class="flex items-center justify-between text-xs text-slate-400 bg-slate-900/90 px-3 py-1.5 rounded-t-xl border border-slate-800 light:bg-slate-200">
+                            <span><i class="fa-regular fa-file-code mr-1"></i> main.py</span>
+                            <button onclick="runPlaygroundCode()" class="px-3 py-1 bg-sky-600 hover:bg-sky-500 text-white font-semibold rounded-lg shadow transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-play text-xs"></i> Chạy Mã Code
+                            </button>
+                        </div>
+                        <textarea id="playground-code" rows="16" class="w-full bg-slate-950 text-sky-300 font-mono text-xs p-3 border border-slate-800 rounded-b-xl focus:outline-none focus:border-sky-500 leading-relaxed light:bg-slate-900 light:text-sky-200" spellcheck="false"></textarea>
+                    </div>
+
+                    <!-- Output Console Box -->
+                    <div class="flex flex-col space-y-2">
+                        <div class="flex items-center justify-between text-xs text-slate-400 bg-slate-900/90 px-3 py-1.5 rounded-t-xl border border-slate-800 light:bg-slate-200">
+                            <span><i class="fa-solid fa-terminal mr-1"></i> Execution Console Output</span>
+                            <button onclick="clearConsole()" class="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs">Xóa console</button>
+                        </div>
+                        <div id="playground-console" class="w-full h-full min-h-[300px] bg-black/90 font-mono text-xs p-3 text-emerald-400 border border-slate-800 rounded-b-xl overflow-y-auto whitespace-pre-wrap leading-relaxed">
+> Trình thực thi Python đã sẵn sàng. Nhấn "Chạy Mã Code" để thực thi...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Syllabus & Reference Resources -->
+        <div id="tab-resources-view" class="hidden space-y-6">
+            <div class="glass-panel p-6 rounded-2xl space-y-6">
+                <div>
+                    <h2 class="text-xl font-bold text-sky-400 mb-1"><i class="fa-solid fa-book-bookmark mr-2"></i>Đề Cương & Tài Liệu Tham Khảo Môn Học</h2>
+                    <p class="text-xs text-slate-400">Tổng hợp giáo trình, tài liệu tham khảo chính thống và chuẩn đầu ra môn học (CLO).</p>
+                </div>
+
+                <!-- Textbooks Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800 space-y-2 light:bg-white light:border-slate-200">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold uppercase text-sky-400 px-2 py-0.5 bg-sky-500/10 rounded border border-sky-500/20">Giáo trình chính</span>
+                            <i class="fa-solid fa-book text-sky-400"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-100 light:text-slate-900">Think Python 2e (Allen B. Downey)</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Sách hướng dẫn nền tảng tư duy máy tính và lập trình Python cơ bản. Bao gồm từ khái niệm biến, hàm, chuỗi cho đến danh sách và vòng lặp while.</p>
+                    </div>
+
+                    <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800 space-y-2 light:bg-white light:border-slate-200">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold uppercase text-indigo-400 px-2 py-0.5 bg-indigo-500/10 rounded border border-indigo-500/20">Tài liệu tham khảo sâu</span>
+                            <i class="fa-solid fa-memory text-indigo-400"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-100 light:text-slate-900">Introduction to Computation and Programming Using Python (John V. Guttag)</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Tài liệu nâng cao tập trung vào mô hình bộ nhớ (Global space, Heap space, Call stack, Activation Records) và tư duy thuật toán.</p>
+                    </div>
+                </div>
+
+                <!-- Course Learning Outcomes Table -->
+                <div class="space-y-3">
+                    <h3 class="text-sm font-bold text-slate-200 light:text-slate-800">Danh Sách Chuẩn Đầu Ra Môn Học (CLOs)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-900/90 text-slate-300 border-b border-slate-800 light:bg-slate-200 light:text-slate-700">
+                                    <th class="p-3">Mã CLO</th>
+                                    <th class="p-3">Mô Tả Mục Tiêu Khả Năng</th>
+                                    <th class="p-3">Bài Học Liên Quan</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800 light:divide-slate-200 text-slate-300 light:text-slate-700">
+                                <tr>
+                                    <td class="p-3 font-bold text-amber-400">CLO(1)</td>
+                                    <td class="p-3">Hiểu cú pháp, kiểu dữ liệu, biểu thức, gán biến và các câu lệnh điều kiện lồng nhau.</td>
+                                    <td class="p-3 text-slate-400">Lecture 1, 2, 3, 9 & Lab 1, 5</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-indigo-400">CLO(3)</td>
+                                    <td class="p-3">Viết hàm, quản lý tham số/giá trị trả về, mô hình bộ nhớ, activation records và import modules.</td>
+                                    <td class="p-3 text-slate-400">Lecture 4, 5, 6, 10 & Lab 2, 3</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-emerald-400">CLO(5)</td>
+                                    <td class="p-3">Thao tác cấu trúc dữ liệu danh sách (List), vòng lặp for/while và xây dựng Loop Invariants.</td>
+                                    <td class="p-3 text-slate-400">Lecture 11, 12, 13, 14 & Lab 6, 7</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-purple-400">CLO(6)</td>
+                                    <td class="p-3">Sử dụng chuỗi ký tự, cắt chuỗi (slicing) và các phương thức xử lý chuỗi nâng cao.</td>
+                                    <td class="p-3 text-slate-400">Lecture 7 & Lab 4</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-bold text-rose-400">CLO(8)</td>
+                                    <td class="p-3">Kiểm thử chương trình, tìm/sửa lỗi (debugging), câu lệnh assert và xử lý ngoại lệ.</td>
+                                    <td class="p-3 text-slate-400">Lecture 8 & Lab 4, 7</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Interactive Detail Drawer / Modal -->
+    <div id="detail-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-3xl rounded-2xl max-h-[90vh] flex flex-col shadow-2xl border border-slate-700 overflow-hidden light:bg-white">
+            
+            <!-- Modal Header -->
+            <div class="p-4 sm:p-5 border-b border-slate-800 light:border-slate-200 flex items-start justify-between bg-slate-900/50 light:bg-slate-100">
+                <div class="space-y-1 pr-4">
+                    <div id="modal-badges" class="flex flex-wrap items-center gap-2 text-xs">
+                        <!-- Dynamic Badges -->
+                    </div>
+                    <h2 id="modal-title" class="text-lg sm:text-xl font-bold text-slate-100 light:text-slate-900 leading-snug">
+                        Detail Title
+                    </h2>
+                    <p id="modal-ref" class="text-xs text-sky-400">Textbook Chapter Reference</p>
+                </div>
+                <button onclick="closeModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition light:hover:bg-slate-200">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content Body -->
+            <div class="p-4 sm:p-6 overflow-y-auto space-y-6 text-sm leading-relaxed">
+                
+                <!-- Overview & Learning Outcomes -->
+                <div class="space-y-2">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                        <i class="fa-solid fa-bullseye text-sky-400"></i> Mục Tiêu Học Tập (Learning Outcomes)
+                    </h3>
+                    <ul id="modal-outcomes" class="list-disc list-inside space-y-1 text-slate-300 light:text-slate-700 text-xs bg-slate-900/60 p-3 rounded-xl border border-slate-800 light:bg-slate-50 light:border-slate-200">
+                        <!-- Dynamic Outcomes -->
+                    </ul>
+                </div>
+
+                <!-- Code Example Section -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                            <i class="fa-solid fa-code text-indigo-400"></i> Ví Dụ Mã Source Code Thực Tế
+                        </h3>
+                        <div class="flex items-center gap-2">
+                            <button onclick="copyModalCode()" class="text-xs px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition">
+                                <i class="fa-regular fa-copy mr-1"></i>Copy
+                            </button>
+                            <button onclick="transferCodeToPlayground()" class="text-xs px-2.5 py-1 bg-sky-600 hover:bg-sky-500 text-white rounded-lg transition font-medium">
+                                <i class="fa-solid fa-play mr-1"></i>Mở trong Playground
+                            </button>
+                        </div>
+                    </div>
+                    <pre class="bg-slate-950 p-4 rounded-xl border border-slate-800 overflow-x-auto text-sky-300 font-mono text-xs leading-relaxed light:bg-slate-900 light:text-sky-200"><code id="modal-code"># Code snippet</code></pre>
+                </div>
+                
+                <!-- PRACTICE SECTION ADDED HERE -->
+                <div class="border-t border-slate-700 light:border-slate-200 pt-5">
+                    <h3 class="text-sm font-bold text-emerald-400 mb-2"><i class="fa-solid fa-dumbbell mr-1"></i> Bài Tập Tự Luyện</h3>
+                    <p id="modal-practice-q" class="text-sm text-slate-300 light:text-slate-700 mb-3 bg-slate-900/50 light:bg-slate-50 p-3 rounded-lg border border-slate-800 light:border-slate-200"></p>
+                    
+                    <button onclick="toggleSolution()" class="px-3 py-1.5 bg-slate-800 light:bg-white hover:bg-slate-700 light:hover:bg-slate-50 text-slate-300 light:text-slate-700 text-xs rounded-lg transition border border-slate-700 light:border-slate-300 shadow-sm">
+                        <i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i>Xem Gợi Ý / Đáp Án
+                    </button>
+                    
+                    <pre id="modal-practice-a" class="hidden bg-slate-950 p-4 rounded-xl border border-emerald-900/50 mt-3 text-emerald-300 font-mono text-xs overflow-x-auto light:bg-emerald-50 light:border-emerald-200 light:text-emerald-800"><code id="modal-practice-code"></code></pre>
+                </div>
+
+                <!-- Personal Notes Section -->
+                <div class="space-y-2 border-t border-slate-800 light:border-slate-200 pt-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
+                            <i class="fa-solid fa-note-sticky"></i> Ghi Chú Cá Nhân Môn Học
+                        </h3>
+                        <span id="note-saved-status" class="text-xs text-emerald-400 hidden"><i class="fa-solid fa-check mr-1"></i>Đã lưu!</span>
+                    </div>
+                    <textarea id="modal-note-input" rows="3" placeholder="Nhập ghi chú, thắc mắc hoặc lời nhắc cá nhân cho bài này..." 
+                              class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-amber-500 light:bg-slate-50 light:border-slate-300 light:text-slate-900"></textarea>
+                    <button onclick="saveModalNote()" class="px-4 py-1.5 bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-xl text-xs transition shadow">
+                        Lưu Ghi Chú
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Footer Controls -->
+            <div class="p-4 bg-slate-900/80 border-t border-slate-800 light:bg-slate-100 light:border-slate-200 flex items-center justify-between">
+                <label class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-300 light:text-slate-700">
+                    <input type="checkbox" id="modal-toggle-complete" onchange="toggleModalComplete()" class="w-4 h-4 rounded text-sky-600 focus:ring-sky-500 bg-slate-900 border-slate-700">
+                    Đánh dấu đã hoàn thành bài này
+                </label>
+                <button onclick="closeModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs light:bg-slate-200 light:text-slate-800">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Overlay -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-slate-800 border border-slate-700 text-slate-100 text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transition-all duration-300 transform translate-y-0 opacity-100">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toast-message">Thông báo thành công</span>
+    </div>
+
+    <!-- Application JavaScript Logic -->
+    <script>
+        // Full Course Syllabus Data Structure with Practice Sections
+        const COURSE_DATA = [
+            {
+                id: 'lec-1', week: 1, type: 'lecture', title: 'Lecture 1: Giới Thiệu & Tổ Chức Môn Học', titleEn: 'Introduction & Course Organization', clos: ['CLO1'], ref: 'Think Python Ch. 1',
+                outcomes: ['Hiểu rõ cấu trúc chương trình, đề cương và tiêu chí đánh giá môn học.', 'Nắm bắt khái niệm về ngôn ngữ biên dịch (Compiled) vs thông dịch (Interpreted).', 'Viết chương trình Python đầu tiên.'],
+                code: `# Lecture 1: Chuong trinh Python dau tien\nprint("Chao mung ban den voi mon hoc Python!")\n\n# Phep tinh so hoc co ban\nresult = 10 + 20 * 3\nprint("Ket qua tinh toan:", result)`,
+                practiceQ: 'Yêu cầu: Viết code in ra 2 dòng chữ: "Xin chao" và "Toi dang hoc Python".',
+                practiceA: 'print("Xin chao")\nprint("Toi dang hoc Python")'
+            },
+            {
+                id: 'lec-2', week: 1, type: 'lecture', title: 'Lecture 2: Kiểu Dữ Liệu & Biểu Thức Cơ Bản', titleEn: 'Introduction to Python - Types & Expressions', clos: ['CLO1'], ref: 'Think Python Ch. 2',
+                outcomes: ['Phân biệt các kiểu dữ liệu cơ bản: int, float, str, bool.', 'Sử dụng các toán tử số học: +, -, *, /, //, %, **.', 'Hiểu sự khác biệt giữa biểu thức và câu lệnh.'],
+                code: `# Lecture 2: Kieu du lieu va bieu thuc\nx = 15\ny = 4\n\nprint("Thuong so:", x / y)\nprint("Chia lấy nguyen:", x // y)\nprint("Chia lay dư:", x % y)`,
+                practiceQ: 'Yêu cầu: Tính chu vi hình tròn có bán kính r = 5. (Công thức: Chu vi = 2 * pi * r, lấy pi = 3.14)',
+                practiceA: 'r = 5\npi = 3.14\nchu_vi = 2 * pi * r\nprint("Chu vi hinh tron:", chu_vi)'
+            },
+            {
+                id: 'lab-1', week: 1, type: 'lab', title: 'Lab 1: Khởi Đầu Với Python & Đánh Giá Biểu Thức', titleEn: 'Getting started with Python', clos: ['CLO1'], ref: 'Lab 1 Guide',
+                outcomes: ['Thành thạo công cụ PyCharm / Jupyter Notebook.', 'Đánh giá và dự đoán giá trị các biểu thức phức tạp.', 'Thực hành thao tác nhập dữ liệu.'],
+                code: `# Lab 1: Tinh chu vi va dien tich\ncd = 12.5\ncr = 4.0\nprint("Dien tich:", cd * cr)\nprint("Chu vi:", 2 * (cd + cr))`,
+                practiceQ: 'Yêu cầu: Đổi nhiệt độ từ C sang F. Cho C = 37. Công thức F = C * 1.8 + 32.',
+                practiceA: 'c = 37\nf = c * 1.8 + 32\nprint("Nhiet do F la:", f)'
+            },
+            {
+                id: 'lec-3', week: 2, type: 'lecture', title: 'Lecture 3: Biến, Toán Tử, Phép Gán & Câu Lệnh', titleEn: 'Variables, Operators, Assignments', clos: ['CLO1'], ref: 'Think Python Ch. 2-3',
+                outcomes: ['Nắm vững quy tắc đặt tên biến và kiểu dữ liệu động.', 'Sử dụng toán tử gán mở rộng (+=, -=).', 'Hiểu cơ chế hoán đổi giá trị hai biến.'],
+                code: `# Lecture 3: Hoan doi gia tri\na = 10\nb = 25\na, b = b, a\nprint("Sau khi hoan doi: a =", a, ", b =", b)`,
+                practiceQ: 'Yêu cầu: Hoán đổi giá trị 2 biến a = 10 và b = 99 (Sử dụng cách viết ngắn gọn của Python).',
+                practiceA: 'a = 10\nb = 99\na, b = b, a\nprint(a, b)'
+            },
+            {
+                id: 'lec-4', week: 2, type: 'lecture', title: 'Lecture 4: Hàm & Các Hàm Tích Hợp', titleEn: 'Functions & Built-in Functions', clos: ['CLO3'], ref: 'Think Python Ch. 3',
+                outcomes: ['Định nghĩa hàm bằng từ khóa def, tham số và đối số.', 'Sử dụng câu lệnh return.', 'Áp dụng hàm built-in phổ biến: abs(), max(), min().'],
+                code: `# Lecture 4: Dinh nghia ham\ndef tinh_hinh_tron(ban_kinh):\n    pi = 3.14159\n    return pi * (ban_kinh ** 2)\n\nprint("Dien tich:", tinh_hinh_tron(5))`,
+                practiceQ: 'Yêu cầu: Viết hàm `tinh_lap_phuong(n)` trả về giá trị n^3.',
+                practiceA: 'def tinh_lap_phuong(n):\n    return n ** 3\n\nprint(tinh_lap_phuong(4)) # Ra 64'
+            },
+            {
+                id: 'lab-2', week: 2, type: 'lab', title: 'Lab 2: Biểu Thức, Toán Tử Logic & Gọi Hàm', titleEn: 'Expressions, Logical operators, Calling functions', clos: ['CLO3'], ref: 'Lab 2 Guide',
+                outcomes: ['Thành thạo kết hợp các toán tử logic: and, or, not.', 'Viết hàm tính toán hình học.', 'Kiểm tra tính đúng đắn của logic.'],
+                code: `# Lab 2: Tinh canh huyen\ndef canh_huyen(a, b):\n    return (a**2 + b**2) ** 0.5\nprint("Canh huyen:", canh_huyen(3, 4))`,
+                practiceQ: 'Yêu cầu: Khai báo biến tuoi = 20. Viết biểu thức logic kiểm tra tuoi nằm trong khoảng 18 đến 25.',
+                practiceA: 'tuoi = 20\nkiem_tra = (tuoi >= 18 and tuoi <= 25)\nprint(kiem_tra)'
+            },
+            {
+                id: 'lec-5', week: 3, type: 'lecture', title: 'Lecture 5: Tầm Vực (Scope) & Call Stack', titleEn: 'Inner workings of functions, scope', clos: ['CLO3'], ref: 'Think Python Ch. 3-4',
+                outcomes: ['Phạm vi biến: Local scope vs Global scope.', 'Khái niệm Activation Records (Stack Frames).', 'Luồng thực thi khi gọi hàm lồng nhau.'],
+                code: `# Lecture 5: Pham vi bien\ng_var = "Toan cuc"\ndef my_func():\n    l_var = "Cuc bo"\n    print(l_var, g_var)\nmy_func()`,
+                practiceQ: 'Yêu cầu: Viết một hàm làm thay đổi giá trị của biến toàn cục (global) `diem_so` từ 5 thành 10.',
+                practiceA: 'diem_so = 5\ndef sua_diem():\n    global diem_so\n    diem_so = 10\n\nsua_diem()\nprint(diem_so) # Ra 10'
+            },
+            {
+                id: 'lec-6', week: 3, type: 'lecture', title: 'Lecture 6: Module Python', titleEn: 'Creating and Importing Modules', clos: ['CLO3'], ref: 'Think Python Ch. 6',
+                outcomes: ['Sử dụng thư viện chuẩn math, random.', 'Tự viết module riêng và import.', 'Hiểu if __name__ == "__main__":'],
+                code: `# Lecture 6: math va random\nimport math\nimport random\nprint("Can bac 2:", math.sqrt(16))\nprint("Random:", random.randint(1, 10))`,
+                practiceQ: 'Yêu cầu: Import thư viện math và tính căn bậc hai của 144.',
+                practiceA: 'import math\nket_qua = math.sqrt(144)\nprint(ket_qua) # Ra 12.0'
+            },
+            {
+                id: 'lab-3', week: 3, type: 'lab', title: 'Lab 3: Tạo Script & Thư Viện Tùy Biến', titleEn: 'Functions and modules', clos: ['CLO3'], ref: 'Lab 3 Guide',
+                outcomes: ['Xây dựng module chứa hàm tiện ích.', 'Tách biệt mã nguồn logic và mã chạy.', 'Tối ưu tái sử dụng.'],
+                code: `# Lab 3: Ham kiem tra nguyen to\ndef is_prime(n):\n    if n <= 1: return False\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0: return False\n    return True`,
+                practiceQ: 'Ghi nhớ: Khi viết thư viện tự tạo, luôn dùng `if __name__ == "__main__":` để code test không tự chạy khi bị import.',
+                practiceA: 'if __name__ == "__main__":\n    print("Code chi chay khi file nay la file chinh")'
+            },
+            {
+                id: 'lec-7', week: 4, type: 'lecture', title: 'Lecture 7: Chuỗi & Slicing', titleEn: 'Strings & String Methods', clos: ['CLO6'], ref: 'Think Python Ch. 8',
+                outcomes: ['Tính bất biến (Immutability) của chuỗi.', 'Chỉ số Indexing và Slicing [start:end:step].', 'Phương thức: upper, lower, replace, f-string.'],
+                code: `# Lecture 7: Slicing chuoi\ntext = "Python Programming"\nprint("Cat chuoi:", text[0:6])\nprint("Dao nguoc:", text[::-1])`,
+                practiceQ: 'Yêu cầu: Cho chuỗi `text = "Python"`. Dùng Slicing để in ra chuỗi đảo ngược.',
+                practiceA: 'text = "Python"\ndao_nguoc = text[::-1]\nprint(dao_nguoc) # Ra nohtyP'
+            },
+            {
+                id: 'lec-8', week: 4, type: 'lecture', title: 'Lecture 8: Kiểm Thử & Debugging', titleEn: 'Specifications, Asserts, Debugging', clos: ['CLO8'], ref: 'Think Python Ch. 6, 8',
+                outcomes: ['Viết Docstring (Pre/Post conditions).', 'Sử dụng lệnh assert để tự động kiểm thử.', 'Nhận biết SyntaxError, RuntimeError, TypeError.'],
+                code: `# Lecture 8: Asserts\ndef chia(a, b):\n    assert b != 0, "Khong the chia cho 0"\n    return a / b\nprint(chia(10, 2))`,
+                practiceQ: 'Yêu cầu: Viết hàm `chia(a, b)`, bên trong dùng assert để đảm bảo b không bằng 0 trước khi thực hiện phép chia.',
+                practiceA: 'def chia(a, b):\n    assert b != 0, "Loi chia cho 0!"\n    return a / b\n\nprint(chia(10, 2))'
+            },
+            {
+                id: 'lab-4', week: 4, type: 'lab', title: 'Lab 4: Chuỗi, Asserts & Lỗi', titleEn: 'Strings, Testing, and Debugging', clos: ['CLO6', 'CLO8'], ref: 'Lab 4 Guide',
+                outcomes: ['Chuẩn hóa dữ liệu chuỗi.', 'Xây dựng test cases tự động bằng assert.', 'Tìm bug và sửa chương trình.'],
+                code: `# Lab 4: Chuan hoa Email\ndef format_email(e):\n    assert "@" in e, "Email thieu @"\n    return e.strip().lower()\nprint(format_email("  Test@ABC.com "))`,
+                practiceQ: 'Yêu cầu: Chuẩn hóa chữ thường và xóa khoảng trắng dư ở 2 đầu của chuỗi `msg = "   HeLLO  "`.',
+                practiceA: 'msg = "   HeLLO  "\nchuan_hoa = msg.strip().lower()\nprint(chuan_hoa) # Ra "hello"'
+            },
+            {
+                id: 'lec-9', week: 5, type: 'lecture', title: 'Lecture 9: Câu Lệnh Điều Kiện', titleEn: 'Conditionals and Control Flow', clos: ['CLO1'], ref: 'Think Python Ch. 5',
+                outcomes: ['Cấu trúc rẽ nhánh if, elif, else.', 'Hiểu biểu thức Boolean Truthy/Falsy.', 'Điều kiện lồng nhau (nested conditionals).'],
+                code: `# Lecture 9: If elif else\ndiem = 8.5\nif diem >= 8.0:\n    print("Gioi")\nelif diem >= 6.5:\n    print("Kha")\nelse:\n    print("TB")`,
+                practiceQ: 'Yêu cầu: Viết hàm kiểm tra số `n`. Trả về "Chan" nếu chia hết cho 2, ngược lại "Le".',
+                practiceA: 'def kiem_tra(n):\n    if n % 2 == 0:\n        return "Chan"\n    else:\n        return "Le"\n\nprint(kiem_tra(5))'
+            },
+            {
+                id: 'lec-10', week: 5, type: 'lecture', title: 'Lecture 10: Mô Hình Bộ Nhớ Trong Python', titleEn: 'Memory in Python - Global, heap, stack', clos: ['CLO3'], ref: 'Guttag Ch. 2',
+                outcomes: ['Kiến trúc bộ nhớ: Call Stack, Global Space và Heap Space.', 'Tham chiếu đối tượng.', 'Sử dụng toán tử is vs ==.'],
+                code: `# Lecture 10: is vs ==\na = [1, 2, 3]\nb = [1, 2, 3]\nprint("a == b:", a == b)\nprint("a is b:", a is b)`,
+                practiceQ: 'Thực hành: Tạo 2 list `a = [1,2]` và `b = [1,2]`. In ra kết quả so sánh `a == b` và `a is b`.',
+                practiceA: 'a = [1, 2]\nb = [1, 2]\nprint(a == b) # True (Cung gia tri)\nprint(a is b) # False (Khac vung nho Heap)'
+            },
+            {
+                id: 'lab-5', week: 5, type: 'lab', title: 'Lab 5: Luồng Thực Thi', titleEn: 'Conditionals and Flow Control', clos: ['CLO1'], ref: 'Lab 5 Guide',
+                outcomes: ['Giải quyết bài toán rẽ nhánh.', 'Xây dựng trình đơn (Menu-driven logic).', 'Tránh lỗi rẽ nhánh phổ biến.'],
+                code: `# Lab 5: Thue thu nhap\nincome = 15\nif income <= 10:\n    tax = income * 0.05\nelse:\n    tax = 10 * 0.05 + (income - 10) * 0.1\nprint("Thue:", tax)`,
+                practiceQ: 'Yêu cầu: Dùng if/elif để xếp loại điểm. >= 8: "Gioi", >=5: "TB", <5: "Yeu". Cho diem = 7.',
+                practiceA: 'diem = 7\nif diem >= 8:\n    print("Gioi")\nelif diem >= 5:\n    print("TB")\nelse:\n    print("Yeu")'
+            },
+            {
+                id: 'lec-11', week: 6, type: 'lecture', title: 'Lecture 11: Danh Sách & Mutable', titleEn: 'Lists & Sequences - Methods', clos: ['CLO5'], ref: 'Think Python Ch. 10',
+                outcomes: ['Dữ liệu Mutable vs Immutable.', 'Khởi tạo và truy cập list.', 'Phương thức: append(), pop(), remove(), sort().'],
+                code: `# Lecture 11: List methods\nnums = [5, 2, 9]\nnums.append(12)\nnums.sort()\nprint(nums)\nnums.pop(0)\nprint(nums)`,
+                practiceQ: 'Yêu cầu: Khai báo list rỗng. Thêm số 5, thêm số 9. Sau đó xóa phần tử cuối cùng (pop).',
+                practiceA: 'lst = []\nlst.append(5)\nlst.append(9)\ncuoi = lst.pop()\nprint(lst) # Chi con [5]'
+            },
+            {
+                id: 'lec-12', week: 6, type: 'lecture', title: 'Lecture 12: Bộ Nhớ & Aliasing', titleEn: 'Lists - Memory, Aliasing, Slices', clos: ['CLO5'], ref: 'Think Python Ch. 10',
+                outcomes: ['Cạm bẫy Aliasing (Đồng danh).', 'Shallow copy và Deep copy.', 'Danh sách lồng nhau (Nested Lists).'],
+                code: `# Lecture 12: Aliasing\na = [1, 2]\nb = a # Aliasing\nc = a.copy() # Copy\nb[0] = 99\nprint("a:", a, "c:", c)`,
+                practiceQ: 'Yêu cầu: Tạo `a = [1, 2, 3]`. Tạo `b` là BẢN SAO của `a`. Đổi b[0] = 99 và in ra cả 2 list.',
+                practiceA: 'a = [1, 2, 3]\nb = a.copy() # Hoac b = a[:]\nb[0] = 99\nprint(a) # Van la [1, 2, 3]\nprint(b) # La [99, 2, 3]'
+            },
+            {
+                id: 'lab-6', week: 6, type: 'lab', title: 'Lab 6: Quản Lý Tập Hợp', titleEn: 'Lists and Objects - attributes, functions', clos: ['CLO5'], ref: 'Lab 6 Guide',
+                outcomes: ['Xây dựng hàm xử lý list.', 'Tính sum, average, min, max.', 'Lọc danh sách.'],
+                code: `# Lab 6: Thong ke\nscores = [8, 9, 6, 10]\nprint("TB:", sum(scores)/len(scores))\nprint("Max:", max(scores))`,
+                practiceQ: 'Yêu cầu: Cho `luong = [10, 15, 20]`. Dùng hàm tích hợp tính tổng tiền lương và lương lớn nhất.',
+                practiceA: 'luong = [10, 15, 20]\ntong = sum(luong)\ncao_nhat = max(luong)\nprint("Tong:", tong, "Max:", cao_nhat)'
+            },
+            {
+                id: 'lec-13', week: 7, type: 'lecture', title: 'Lecture 13: Vòng Lặp For', titleEn: 'Iteration & For-Loops', clos: ['CLO5'], ref: 'Think Python Ch. 7',
+                outcomes: ['Duyệt chuỗi bằng for.', 'Sử dụng range(start, stop, step).', 'Mẫu tích lũy (Accumulate pattern).'],
+                code: `# Lecture 13: For & Range\ntong = 0\nfor i in range(1, 6):\n    tong += i\nprint("Tong 1 den 5:", tong)`,
+                practiceQ: 'Yêu cầu: Dùng vòng lặp `for` tính tổng các số từ 1 đến 50.',
+                practiceA: 'tong = 0\nfor i in range(1, 51):\n    tong += i\nprint("Tong la:", tong)'
+            },
+            {
+                id: 'lec-14', week: 7, type: 'lecture', title: 'Lecture 14: While & Bất Biến Vòng Lặp', titleEn: 'While loops & Loop invariants', clos: ['CLO5'], ref: 'Think Python Ch. 7',
+                outcomes: ['Vòng lặp không cố định số lần.', '3 thuộc tính Bất Biến Vòng Lặp: Khởi tạo, Duy trì, Kết thúc.'],
+                code: `# Lecture 14: While loop\ncount = 3\nwhile count > 0:\n    print(count)\n    count -= 1\nprint("Xong!")`,
+                practiceQ: 'Yêu cầu: Dùng vòng lặp `while` đếm ngược từ 3 về 1, sau đó in ra "Phat!".',
+                practiceA: 'n = 3\nwhile n > 0:\n    print(n)\n    n -= 1\nprint("Phat!")'
+            },
+            {
+                id: 'lab-7', week: 7, type: 'lab', title: 'Lab 7: Asserts Kiểm Soát Luồng Lặp', titleEn: 'Lists, loops and Asserts', clos: ['CLO5'], ref: 'Lab 7 Guide',
+                outcomes: ['Vòng lặp với danh sách phức tạp.', 'Assert kiểm tra Loop Invariant.', 'Tìm kiếm tuyến tính (Linear Search).'],
+                code: `# Lab 7: Linear Search\narr = [10, 20, 30]\ntarget = 20\ni = 0\nwhile i < len(arr):\n    if arr[i] == target: print("Found at", i)\n    i += 1`,
+                practiceQ: 'Yêu cầu: Viết thuật toán tìm kiếm tuyến tính cơ bản để tìm số 9 trong mảng `[1, 4, 9, 16]`.',
+                practiceA: 'arr = [1, 4, 9, 16]\ntarget = 9\nfound = False\nfor item in arr:\n    if item == target:\n        found = True\n        break\nprint("Co tim thay 9 khong?", found)'
+            }
+        ];
+
+        // Code Presets for Playground Tab
+        const PLAYGROUND_PRESETS = {
+            'preset-w1': `# Tuần 1: Cú pháp & Biểu thức số học\nx = 10\ny = 3\nprint("Phép cộng:", x + y)\nprint("Lũy thừa 10^3:", x ** y)\nprint("Chia lấy nguyên:", x // y)`,
+            'preset-w2': `# Tuần 2: Định nghĩa Hàm & Logic\ndef gttd(number):\n    if number < 0:\n        return -number\n    return number\n\nprint("Giá trị tuyệt đối -15:", gttd(-15))`,
+            'preset-w3': `# Tuần 3: Phạm vi biến & Thư viện\nimport math\n\ndef tinh_duong_cheo(a, b):\n    return math.sqrt(a**2 + b**2)\n\nprint("Đường chéo chữ nhật 3x4:", tinh_duong_cheo(3, 4))`,
+            'preset-w4': `# Tuần 4: Xử lý Chuỗi & Asserts\ndef parse_user(name):\n    assert len(name) > 0, "Tên không được rỗng"\n    return name.strip().title()\n\nprint("Tên chuẩn hóa:", parse_user("   nguyen van a  "))`,
+            'preset-w5': `# Tuần 5: Câu lệnh điều kiện lồng nhau\ndiem = 8.2\nif diem >= 8.0:\n    loai = "Giỏi"\nelif diem >= 6.5:\n    loai = "Khá"\nelse:\n    loai = "Trung bình"\nprint("Xếp loại học tập:", loai)`,
+            'preset-w6': `# Tuần 6: Danh sách & Aliasing\nlist_a = [10, 20, 30]\nlist_b = list_a.copy()\nlist_a.append(40)\nprint("List A:", list_a)\nprint("List B (Copy độc lập):", list_b)`,
+            'preset-w7': `# Tuần 7: Vòng lặp While & Bất biến vòng lặp\n# Thuật toán tìm UCLN của 48 và 18\na, b = 48, 18\nwhile b != 0:\n    a, b = b, a % b\nprint("Ước số chung lớn nhất (UCLN):", a)`
+        };
+
+        // Application State Saved in LocalStorage
+        let completedItems = JSON.parse(localStorage.getItem('python_portal_completed') || '{}');
+        let itemNotes = JSON.parse(localStorage.getItem('python_portal_notes') || '{}');
+        let currentModalItemId = null;
+
+        // Initialize App on Page Load
+        window.onload = function() {
+            initTheme();
+            renderCurriculumCards();
+            updateProgressStats();
+            loadPlaygroundPreset();
+        };
+
+        // Theme Toggle (Dark / Light Mode)
+        function toggleDarkMode() {
+            const htmlEl = document.documentElement;
+            const iconEl = document.getElementById('theme-icon');
+            if (htmlEl.classList.contains('dark')) {
+                htmlEl.classList.remove('dark');
+                htmlEl.classList.add('light');
+                iconEl.className = 'fa-solid fa-sun text-amber-400';
+                localStorage.setItem('python_portal_theme', 'light');
+            } else {
+                htmlEl.classList.remove('light');
+                htmlEl.classList.add('dark');
+                iconEl.className = 'fa-solid fa-moon text-slate-300';
+                localStorage.setItem('python_portal_theme', 'dark');
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('python_portal_theme');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+                document.getElementById('theme-icon').className = 'fa-solid fa-sun text-amber-400';
+            }
+        }
+
+        // Switch Main Tab Navigation
+        function switchMainTab(tab) {
+            // Hide all tab content
+            ['curriculum', 'playground', 'resources', 'midterm'].forEach(t => {
+                const view = document.getElementById(`tab-${t}-view`);
+                const btn = document.getElementById(`nav-${t}`);
+                const mobBtn = document.getElementById(`nav-mob-${t}`);
+                
+                if (view) view.classList.add('hidden');
+                if (btn) btn.className = 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition light:hover:text-slate-900';
+                if (mobBtn) mobBtn.className = 'flex-1 py-2 text-center text-slate-400';
+            });
+
+            // Show selected tab content
+            const activeView = document.getElementById(`tab-${tab}-view`);
+            const activeBtn = document.getElementById(`nav-${tab}`);
+            const activeMobBtn = document.getElementById(`nav-mob-${tab}`);
+
+            if (activeView) activeView.classList.remove('hidden');
+            if (activeBtn) activeBtn.className = 'px-3 py-1.5 rounded-lg bg-sky-600 text-white transition font-medium shadow-md';
+            if (activeMobBtn) {
+                activeMobBtn.className = 'flex-1 py-2 text-center text-sky-400 font-semibold border-b-2 border-sky-400';
+            }
+        }
+
+        // Midterm Quiz Checker
+        function checkAnswer(questionName, correctValue, explanation) {
+            const options = document.getElementsByName(questionName);
+            let selectedValue = null;
+            
+            for (let option of options) {
+                if (option.checked) {
+                    selectedValue = option.value;
+                    break;
+                }
+            }
+
+            const resElement = document.getElementById(`res-${questionName}`);
+            resElement.classList.remove('hidden');
+            
+            if (selectedValue === null) {
+                resElement.innerText = "Vui lòng chọn 1 đáp án!";
+                resElement.className = "text-xs font-bold text-amber-500 mt-2 block";
+            } else if (selectedValue === correctValue) {
+                resElement.innerHTML = `<i class="fa-solid fa-check text-emerald-500 mr-1"></i> Chính xác! ${explanation}`;
+                resElement.className = "text-xs font-bold text-emerald-400 mt-2 block";
+            } else {
+                resElement.innerHTML = `<i class="fa-solid fa-xmark text-rose-500 mr-1"></i> Sai rồi. Đáp án đúng là ${correctValue}. ${explanation}`;
+                resElement.className = "text-xs font-bold text-rose-400 mt-2 block";
+            }
+        }
+
+        // Toggle solution inside Modal
+        function toggleSolution() {
+            document.getElementById('modal-practice-a').classList.toggle('hidden');
+        }
+
+        // Render Cards Grouped by Weeks
+        function renderCurriculumCards() {
+            const container = document.getElementById('course-cards-container');
+            container.innerHTML = '';
+
+            const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+            const weekFilter = document.getElementById('week-filter').value;
+            const typeFilter = document.getElementById('type-filter').value;
+            const cloFilter = document.getElementById('clo-filter').value;
+
+            // Filter items
+            const filteredItems = COURSE_DATA.filter(item => {
+                const matchSearch = item.title.toLowerCase().includes(searchQuery) || 
+                                    item.titleEn.toLowerCase().includes(searchQuery) ||
+                                    item.outcomes.some(o => o.toLowerCase().includes(searchQuery));
+                const matchWeek = (weekFilter === 'all') || (item.week.toString() === weekFilter);
+                const matchType = (typeFilter === 'all') || (item.type === typeFilter);
+                const matchCLO = (cloFilter === 'all') || (item.clos.includes(cloFilter));
+
+                return matchSearch && matchWeek && matchType && matchCLO;
+            });
+
+            document.getElementById('active-count-label').innerText = `Hiển thị ${filteredItems.length} / ${COURSE_DATA.length} mục`;
+
+            if (filteredItems.length === 0) {
+                container.innerHTML = `
+                    <div class="glass-panel p-8 rounded-2xl text-center space-y-3">
+                        <i class="fa-solid fa-filter-circle-xmark text-4xl text-slate-500"></i>
+                        <h3 class="font-bold text-slate-300">Không tìm thấy bài học nào phù hợp</h3>
+                        <p class="text-xs text-slate-500">Vui lòng thử thay đổi từ khóa tìm kiếm hoặc bỏ bớt bộ lọc.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Group filtered items by Week
+            const weeksMap = {};
+            filteredItems.forEach(item => {
+                if (!weeksMap[item.week]) weeksMap[item.week] = [];
+                weeksMap[item.week].push(item);
+            });
+
+            Object.keys(weeksMap).sort((a,b) => a - b).forEach(weekNum => {
+                const weekSection = document.createElement('div');
+                weekSection.className = 'space-y-3';
+
+                const itemsInWeek = weeksMap[weekNum];
+                const weekCompletedCount = itemsInWeek.filter(i => completedItems[i.id]).length;
+
+                weekSection.innerHTML = `
+                    <div class="flex items-center justify-between border-b border-slate-800 light:border-slate-300 pb-2">
+                        <h2 class="text-base font-bold text-slate-200 light:text-slate-800 flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/20 flex items-center justify-center text-xs">W${weekNum}</span>
+                            Tuần ${weekNum}
+                        </h2>
+                        <span class="text-xs text-slate-400 font-medium">${weekCompletedCount}/${itemsInWeek.length} Hoàn thành</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        ${itemsInWeek.map(item => createCardHTML(item)).join('')}
+                    </div>
+                `;
+
+                container.appendChild(weekSection);
+            });
+        }
+
+        // Generate HTML Card for each Lecture/Lab
+        function createCardHTML(item) {
+            const isCompleted = !!completedItems[item.id];
+            const hasNote = !!itemNotes[item.id];
+            const isLab = item.type === 'lab';
+
+            const badgeTypeClass = isLab 
+                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
+                : 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20';
+            
+            const badgeTypeText = isLab ? 'LAB' : 'LECTURE';
+
+            return `
+                <div class="glass-panel rounded-2xl p-4 flex flex-col justify-between space-y-3 hover:border-slate-600 transition-all duration-200 relative group ${isCompleted ? 'border-l-4 border-l-emerald-500 bg-emerald-950/10' : ''}">
+                    <div class="space-y-2">
+                        <!-- Card Top Badges -->
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded border ${badgeTypeClass}">
+                                    ${badgeTypeText}
+                                </span>
+                                ${item.clos.map(clo => `
+                                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                                        ${clo}
+                                    </span>
+                                `).join('')}
+                            </div>
+                            <span class="text-[10px] text-slate-400 font-mono">${item.ref.split(' ')[0]}</span>
+                        </div>
+
+                        <!-- Card Title -->
+                        <h3 class="font-bold text-sm text-slate-100 light:text-slate-900 group-hover:text-sky-400 transition leading-snug">
+                            ${item.title}
+                        </h3>
+
+                        <!-- Learning Outcomes Preview -->
+                        <p class="text-xs text-slate-400 light:text-slate-600 line-clamp-2 leading-relaxed">
+                            ${item.outcomes[0]}
+                        </p>
+                    </div>
+
+                    <!-- Card Bottom Actions -->
+                    <div class="pt-2 border-t border-slate-800/80 light:border-slate-200 flex items-center justify-between text-xs">
+                        <!-- Checkbox Completed -->
+                        <label class="flex items-center gap-2 cursor-pointer text-slate-300 light:text-slate-700 hover:text-white transition">
+                            <input type="checkbox" ${isCompleted ? 'checked' : ''} onchange="toggleItemComplete('${item.id}', this.checked)" class="w-4 h-4 rounded text-sky-600 focus:ring-sky-500 bg-slate-900 border-slate-700">
+                            <span class="text-xs font-medium">${isCompleted ? 'Đã xong' : 'Chưa xong'}</span>
+                        </label>
+
+                        <div class="flex items-center gap-2">
+                            ${hasNote ? '<span class="text-amber-400 text-xs" title="Đã có ghi chú cá nhân"><i class="fa-solid fa-note-sticky"></i></span>' : ''}
+                            <button onclick="openModal('${item.id}')" class="px-2.5 py-1 bg-sky-600/20 hover:bg-sky-600 text-sky-300 hover:text-white rounded-lg border border-sky-500/30 transition font-medium text-xs flex items-center">
+                                <i class="fa-solid fa-dumbbell text-emerald-400 mr-1 hidden sm:inline"></i> Chi tiết & Luyện <i class="fa-solid fa-chevron-right text-[10px] ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Apply Search & Filters
+        function applyFilters() {
+            renderCurriculumCards();
+        }
+
+        // Checkbox Completion Toggle
+        function toggleItemComplete(itemId, checked) {
+            if (checked) {
+                completedItems[itemId] = true;
+                showToast("Đã hoàn thành bài học!", "success");
+            } else {
+                delete completedItems[itemId];
+                showToast("Đã bỏ đánh dấu hoàn thành", "info");
+            }
+            localStorage.setItem('python_portal_completed', JSON.stringify(completedItems));
+            updateProgressStats();
+            renderCurriculumCards();
+        }
+
+        // Modal Logic
+        function openModal(itemId) {
+            const item = COURSE_DATA.find(i => i.id === itemId);
+            if (!item) return;
+
+            currentModalItemId = itemId;
+            
+            // Set Modal Badges
+            const isLab = item.type === 'lab';
+            const badgeTypeClass = isLab ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20';
+            
+            document.getElementById('modal-badges').innerHTML = `
+                <span class="px-2 py-0.5 rounded border text-xs font-bold ${badgeTypeClass}">
+                    Tuần ${item.week} • ${isLab ? 'Bài Thực Hành (Lab)' : 'Bài Giảng (Lecture)'}
+                </span>
+                ${item.clos.map(clo => `
+                    <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-semibold">
+                        ${clo}
+                    </span>
+                `).join('')}
+            `;
+
+            document.getElementById('modal-title').innerText = item.title;
+            document.getElementById('modal-ref').innerText = `Tài liệu tham khảo: ${item.ref}`;
+            
+            // Render Learning Outcomes
+            document.getElementById('modal-outcomes').innerHTML = item.outcomes.map(o => `<li>${o}</li>`).join('');
+            
+            // Code & Notes
+            document.getElementById('modal-code').innerText = item.code;
+            document.getElementById('modal-note-input').value = itemNotes[itemId] || '';
+            document.getElementById('modal-toggle-complete').checked = !!completedItems[itemId];
+            document.getElementById('note-saved-status').classList.add('hidden');
+
+            // Practice Area
+            document.getElementById('modal-practice-q').innerText = item.practiceQ;
+            document.getElementById('modal-practice-code').innerText = item.practiceA;
+            document.getElementById('modal-practice-a').classList.add('hidden');
+
+            document.getElementById('detail-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('detail-modal').classList.add('hidden');
+            currentModalItemId = null;
+        }
+
+        function toggleModalComplete() {
+            if (!currentModalItemId) return;
+            const checked = document.getElementById('modal-toggle-complete').checked;
+            toggleItemComplete(currentModalItemId, checked);
+        }
+
+        function saveModalNote() {
+            if (!currentModalItemId) return;
+            const val = document.getElementById('modal-note-input').value.trim();
+            if (val) {
+                itemNotes[currentModalItemId] = val;
+            } else {
+                delete itemNotes[currentModalItemId];
+            }
+            localStorage.setItem('python_portal_notes', JSON.stringify(itemNotes));
+            
+            document.getElementById('note-saved-status').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('note-saved-status').classList.add('hidden');
+            }, 2000);
+
+            updateProgressStats();
+            renderCurriculumCards();
+            showToast("Đã lưu ghi chú cá nhân!", "success");
+        }
+
+        function copyModalCode() {
+            const codeText = document.getElementById('modal-code').innerText;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = codeText;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+            showToast("Đã sao chép mã code vào Clipboard!", "success");
+        }
+
+        function transferCodeToPlayground() {
+            const codeText = document.getElementById('modal-code').innerText;
+            document.getElementById('playground-code').value = codeText;
+            closeModal();
+            switchMainTab('playground');
+            showToast("Mã code đã chuyển sang Playground. Nhấn Chạy Mã Code!", "info");
+        }
+
+        // Update Stats Dashboard Cards
+        function updateProgressStats() {
+            const totalItems = COURSE_DATA.length;
+            const completedCount = Object.keys(completedItems).length;
+            const percentage = Math.round((completedCount / totalItems) * 100);
+
+            // Lectures count
+            const lecturesTotal = COURSE_DATA.filter(i => i.type === 'lecture').length;
+            const lecturesDone = COURSE_DATA.filter(i => i.type === 'lecture' && completedItems[i.id]).length;
+
+            // Labs count
+            const labsTotal = COURSE_DATA.filter(i => i.type === 'lab').length;
+            const labsDone = COURSE_DATA.filter(i => i.type === 'lab' && completedItems[i.id]).length;
+
+            // Notes count
+            const notesCount = Object.keys(itemNotes).length;
+
+            // Update UI Labels
+            document.getElementById('overall-percent').innerText = `${percentage}%`;
+            document.getElementById('overall-status-text').innerText = `${completedCount} / ${totalItems} Mục`;
+            document.getElementById('lecture-count-text').innerText = `${lecturesDone} / ${lecturesTotal}`;
+            document.getElementById('lab-count-text').innerText = `${labsDone} / ${labsTotal}`;
+            document.getElementById('notes-count-text').innerText = `${notesCount} Ghi chú`;
+
+            // SVG Radial Progress Bar Update
+            const circle = document.getElementById('progress-circle');
+            const circumference = 138;
+            const offset = circumference - (percentage / 100) * circumference;
+            circle.style.strokeDashoffset = offset;
+        }
+
+        // Action Toolbar Buttons
+        function markAllVisible(status) {
+            COURSE_DATA.forEach(item => {
+                if (status) {
+                    completedItems[item.id] = true;
+                }
+            });
+            localStorage.setItem('python_portal_completed', JSON.stringify(completedItems));
+            updateProgressStats();
+            renderCurriculumCards();
+            showToast("Đã cập nhật trạng thái hoàn thành!", "success");
+        }
+
+        function resetAllProgress() {
+            if (confirm("Bạn có chắc chắn muốn đặt lại toàn bộ tiến độ học tập và ghi chú?")) {
+                completedItems = {};
+                itemNotes = {};
+                localStorage.removeItem('python_portal_completed');
+                localStorage.removeItem('python_portal_notes');
+                updateProgressStats();
+                renderCurriculumCards();
+                showToast("Đã khôi phục cài đặt gốc thành công", "info");
+            }
+        }
+
+        // Playground Presets Handler
+        function loadPlaygroundPreset() {
+            const key = document.getElementById('playground-presets').value;
+            if (PLAYGROUND_PRESETS[key]) {
+                document.getElementById('playground-code').value = PLAYGROUND_PRESETS[key];
+            }
+        }
+
+        function clearConsole() {
+            document.getElementById('playground-console').innerText = "> Console đã xóa.";
+        }
+
+        // Simulated Python Interpreter Execution
+        function runPlaygroundCode() {
+            const code = document.getElementById('playground-code').value;
+            const consoleEl = document.getElementById('playground-console');
+            consoleEl.innerText = "> Đang thực thi mã code Python...\n\n";
+
+            const logs = [];
+
+            try {
+                // Parse lines and simulate Python execution
+                const lines = code.split('\n');
+                let scope = {};
+
+                // Intercept print statements & simple JS evaluation
+                lines.forEach((line, index) => {
+                    let trimmed = line.trim();
+                    if (!trimmed || trimmed.startsWith('#')) return;
+
+                    // Handle print(...)
+                    if (trimmed.startsWith('print(') && trimmed.endsWith(')')) {
+                        let content = trimmed.substring(6, trimmed.length - 1);
+                        // Process multiple comma separated parameters
+                        let args = content.split(',').map(arg => arg.trim());
+                        let outputStr = args.map(arg => {
+                            if ((arg.startsWith('"') && arg.endsWith('"')) || (arg.startsWith("'") && arg.endsWith("'"))) {
+                                return arg.slice(1, -1);
+                            }
+                            try {
+                                return evalInScope(arg, scope);
+                            } catch(e) {
+                                return arg;
+                            }
+                        }).join(' ');
+                        logs.push(outputStr);
+                    } 
+                    // Handle variable assignments (x = val)
+                    else if (trimmed.includes('=') && !trimmed.includes('==') && !trimmed.includes('<=') && !trimmed.includes('>=')) {
+                        let parts = trimmed.split('=');
+                        let varName = parts[0].trim();
+                        let valExpr = parts[1].trim();
+                        try {
+                            scope[varName] = evalInScope(valExpr, scope);
+                        } catch(e) {
+                            scope[varName] = valExpr;
+                        }
+                    }
+                    // Handle assert condition
+                    else if (trimmed.startsWith('assert ')) {
+                        let condStr = trimmed.replace('assert ', '').split(',')[0];
+                        let isTrue = evalInScope(condStr, scope);
+                        if (!isTrue) {
+                            throw new Error(`AssertionError: Lỗi kiểm thử Assert ở dòng ${index + 1}!`);
+                        }
+                    }
+                });
+
+                if (logs.length === 0) {
+                    logs.push("[Chương trình thực thi thành công không có output in ra màn hình]");
+                }
+
+                consoleEl.innerText = logs.map(l => ">>> " + l).join('\n') + "\n\n✓ Process finished with exit code 0";
+
+            } catch (err) {
+                consoleEl.innerText = `❌ Runtime Error:\n${err.message}\n\nProcess finished with error code 1`;
+            }
+        }
+
+        // Scope Evaluator Helper for Playground
+        function evalInScope(expr, scope) {
+            let jsExpr = expr
+                .replace(/\bTrue\b/g, 'true')
+                .replace(/\bFalse\b/g, 'false')
+                .replace(/\bNone\b/g, 'null')
+                .replace(/\/\//g, 'Math.floor')
+                .replace(/\*\*/g, '**');
+
+            Object.keys(scope).forEach(key => {
+                const reg = new RegExp(`\\b${key}\\b`, 'g');
+                if (typeof scope[key] === 'string') {
+                    jsExpr = jsExpr.replace(reg, `"${scope[key]}"`);
+                } else {
+                    jsExpr = jsExpr.replace(reg, scope[key]);
+                }
+            });
+
+            try {
+                return Function(`"use strict"; return (${jsExpr})`)();
+            } catch (e) {
+                return expr;
+            }
+        }
+
+        // Toast Feedback System
+        function showToast(msg, type = "success") {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toast-icon');
+            const message = document.getElementById('toast-message');
+
+            message.innerText = msg;
+            if (type === "success") {
+                icon.className = "fa-solid fa-circle-check text-emerald-400";
+            } else if (type === "info") {
+                icon.className = "fa-solid fa-circle-info text-sky-400";
+            } else {
+                icon.className = "fa-solid fa-triangle-exclamation text-rose-400";
+            }
+
+            toast.classList.remove('hidden');
+            toast.classList.remove('translate-y-full', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-full', 'opacity-0');
+                setTimeout(() => toast.classList.add('hidden'), 300);
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
